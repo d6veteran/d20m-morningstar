@@ -1,0 +1,134 @@
+{% extends "main.html" %}
+
+		{% block title %}
+		<title>d20morningstar - Character Sheet</title> 
+		{% endblock %}
+
+		{% block page-id %}
+		<div data-role="page" id="sheet">
+		{% endblock %}
+			
+			{% block header %}
+			<div data-role="header" data-theme="a">
+				<h1>{{player.name}}</h1>
+			</div><!-- /header -->			
+			{% endblock %}
+		
+			{% block content %}
+			<div data-role="content" id="content">	
+				<table summary="This table contains player stats.">
+					<tbody>
+						<tr>	
+							<th>Class</th>
+							<td>{{player.cast}}</td>
+							<th>Race</th>
+							<td>{{player.race}}</td>
+							<th>Lvl</th>
+							<td>{{player.level}}</td>
+							<th>Exp</th>
+							<td>{{player.experience}}</td>
+							<th>HP</th>
+							<td>{{player.hit_points.hp}}</td>	
+						</tr>					
+					</tbody>	
+				</table>	
+				
+				<table summary="This table contains player stats.">
+					<tbody>
+						<tr>
+							<th>STR</th>
+							<td>{{player.scores.abilities.STR.score}}</td>
+							<td>+{{player.scores.abilities.STR.mod}}</td>
+							<th>INT</th>
+							<td>{{player.scores.abilities.INT.score}}</td>
+							<td>+{{player.scores.abilities.INT.mod}}</td>
+							<th>AC</th>
+							<td>{{player.scores.defenses.AC.score}}</td>
+						</tr>
+						<tr>
+							<th>CON</th>
+							<td>{{player.scores.abilities.CON.score}}</td>
+							<td>+{{player.scores.abilities.CON.mod}}</td>
+							<th>WIS</th>
+							<td>{{player.scores.abilities.WIS.score}}</td>
+							<td>+{{player.scores.abilities.WIS.mod}}</td>
+							<th>FORT</th>
+							<td>{{player.scores.defenses.FORT.score}}</td>
+						</tr>
+						<tr>
+							<th>DEX</th>
+							<td>{{player.scores.abilities.DEX.score}}</td>
+							<td>+{{player.scores.abilities.DEX.mod}}</td>
+							<th>CHA</th>
+							<td>{{player.scores.abilities.CHA.score}}</td>
+							<td>+{{player.scores.abilities.CHA.mod}}</td>
+							<th>REF</th>
+							<td>{{player.scores.defenses.REF.score}}</td>
+						</tr>	
+						<tr>
+							<th></th>
+							<td></td>
+							<td></td>
+							<th></th>
+							<td></td>
+							<td></td>
+							<th>WILL</th>
+							<td>{{player.scores.defenses.WILL.score}}</td>
+						</tr>																	
+					</tbody>
+				</table>	
+				
+				<div id="weapons" data-role="collapsible" data-collapsed="true">
+					<h2>Weapons</h2>
+					<table>
+						{% for w in player.items.weapons %}
+						<tr>
+							<td>{{w.name}}</td>
+							<td>{{w.attack_mod}}</td>
+							<th>dmg</th>
+							<td>{{w.damage_dice}}d{{w.damage_die}}</td>
+							<td>{{w.damage.slot}}</td>
+						</tr>	
+						{% endfor %}
+					</table>	
+				</div>
+
+				<div id="powers" data-role="collapsible" data-collapsed="true">
+					<h2>Powers</h2>
+					<table>
+						{% for a in player.powers.attacks %}
+						<tr>
+							<td>{{a.name}}</td>
+							<td>{{a.attack_mod}}</td>
+							<th>dmg</th>
+							<td>{{a.damage_dice}}d{{a.damage_die}}</td>
+							<th>recharge</th>
+							<td>{{a.recharge}}</td>
+						</tr>	
+						{% endfor %}
+					</table>					
+				</div>
+
+				<div id="armor" data-role="collapsible" data-collapsed="true">
+					<h2>Armor</h2>
+					<table>
+						{% for a in player.items.armor %}
+						<tr>
+							<td>{{a.name}}</td>
+							<td>{{a.ability_mod}}</td>
+							<th>slot</th>
+							<td>{{a.slot}}</td>
+						</tr>	
+						{% endfor %}
+					</table>					
+				</div>
+		
+			</div><!-- /content -->
+			{% endblock %}
+
+			{% block footer %}
+			<div data-role="footer" data-theme="d" data-position="fixed" id="footer">
+	     	<a href="/mobile/character/{{player.key}}/quest" data-role="button" data-theme="b" class="button" target="_blank">BEGIN QUEST</a> 				
+			</div><!-- /footer -->			
+			{% endblock %}
+

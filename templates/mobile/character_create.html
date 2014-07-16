@@ -1,0 +1,64 @@
+{% extends "main.html" %}
+
+		{% block title %}
+		<title>d20morningstar - Character Create</title> 
+		{% endblock %}
+
+		{% block script %}
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true&language=en"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"></script>
+		<script type="text/javascript">
+		$(function() {
+			$('#create').bind('pageshow', function() {
+        var success = function(position) {   
+					var coords = position.coords;
+          var lat = coords.latitude;
+ 					var lon = coords.longitude;
+					document.getElementById('lat').setAttribute('value',lat);
+					document.getElementById('lon').setAttribute('value',lon);					
+        };
+        var fail = function(e) {
+             alert('Can\'t retrieve position.\nError: ' + e);
+        };
+        navigator.geolocation.getCurrentPosition(success, fail);				
+			});
+		});
+		$('#perception-check').bind('click', function() {
+			$.getJSON('/mobile/')
+			
+		});
+	
+		</script>
+		{% endblock %}
+
+		{% block page-id %}
+		<div data-role="page" id="create">
+		{% endblock %}
+			
+			{% block header %}
+			<div data-role="header" data-theme="a">
+				<h1>Create</h1>
+			</div><!-- /header -->			
+			{% endblock %}		
+			
+			{% block content %}
+			<div data-role="content" id="content">	
+				<h2>Create new character:</h2>
+				<div data-role="fieldcontain" id="templates">
+					<form method="post">
+			  		<fieldset data-role="controlgroup">
+							<input type="hidden" id="lat" name="lat" value=""/>
+							<input type="hidden" id="lon" name="lon" value=""/>						
+							<label for="name">Name:</label>
+							<input type="text" name="name" id="name" value=""  /><br/>			<br/>		
+							<label for="name">Build:</label>						
+							{% for t in templates %}
+				    	<input type="radio" name="template" id="{{t.key}}" value="{{t.key}}" />
+				    	<label for="{{t.key}}">{{t.name}}</label>
+							{% endfor %}
+							<button value="submit-value" name="submit" data-theme="b" type="submit" class="ui-btn-hidden" aria-disabled="false">Submit</button>
+				  	</fieldset>
+					</form>
+				</div><!-- /templates -->				
+			</div><!-- /content -->
+			{% endblock %}

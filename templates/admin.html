@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+
+<html>
+
+  <head>
+  	<title>Admin</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		{% block meta %}
+		{% endblock %}
+		<script src="https://www.google.com/jsapi?key=ABQIAAAApPeof0WyN6ORT7NeNop5OxQTfLwio8eQ7l5nn2epvDXvYfKfNxTgczQKHjATlT2Z11y3yDSfj-x87g" type="text/javascript"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.js"></script>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+		<style type="text/css">
+			#header ul { padding: 0; }
+			#header li { padding-right: 18px; }
+			#header ul, #header li { display: inline; }
+			table, th, td {	border: 1px solid black; }
+			table { margin: 14px 0; }
+			th, td { padding: 2px 6px; }
+			form { margin: 20px 0; border: 1px solid black; padding: 6px; }
+			.items input { display: inline; margin-right: 8px; }
+			.items span { padding-right: 10px; }
+		</style>
+		{% block script %}
+		{% endblock %}
+  </head> 
+  <body onload="initialize()">
+  <div id="container">
+    <div id="header">
+			<ul>
+				<li><a href="/admin/init">Init</a></li>				
+				<li><a href="/admin/cast">Cast</a></li>
+				<li><a href="/admin/race">Race</a></li>	
+				<li><a href="/admin/weapon">Weapon</a></li>	
+				<li><a href="/admin/armor">Armor</a></li>	
+				<li><a href="/admin/power">Power</a></li>				
+				<li><a href="/admin/test/start">START</a></li>				
+			</ul>	
+    </div><!-- /header -->
+    <div id="content"> 
+		{% block content %}
+		{% endblock %}
+		</div><!-- /content -->
+	 	<div id="footer">
+		</div><!-- /footer -->
+	</div><!-- /container -->
+  </body>
+</html>

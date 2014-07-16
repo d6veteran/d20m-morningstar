@@ -1,0 +1,158 @@
+{% extends "admin.html" %}
+
+{% block content %}
+<div>
+	<h2>Character: {{character.name}}</h2>
+	<table>
+		<tr>
+			<th>Class</th>
+			<th>Race</th>
+			<th>Weight</th>
+			<th>Height</th>
+			<th>Alignment</th>				
+		</tr>	
+		<tr>
+			<td>{{character.cast}}</td>
+			<td>{{character.race}}</td>
+			<td>{{character.weight}}</td>			
+			<td>{{character.height}}</td>
+			<td>{{character.alignment}}</td>
+		</tr>	
+	</table>	
+	<table>
+		<tr>
+			<th>ABILITY</th>
+			<th>STR</th>
+			<th>CON</th>
+			<th>DEX</th>						
+			<th>INT</th>
+			<th>WIS</th>
+			<th>CHA</th>
+		</tr>
+		<tr>
+			<td>SCORE</td>
+			<td>{{character.scores.abilities.STR.score}}</td>
+			<td>{{character.scores.abilities.CON.score}}</td>
+			<td>{{character.scores.abilities.DEX.score}}</td>
+			<td>{{character.scores.abilities.INT.score}}</td>
+			<td>{{character.scores.abilities.WIS.score}}</td>
+			<td>{{character.scores.abilities.CHA.score}}</td>
+		</tr>		
+		<tr>
+			<td>MOD</td>
+			<td>{{character.scores.abilities.STR.mod}}</td>
+			<td>{{character.scores.abilities.CON.mod}}</td>
+			<td>{{character.scores.abilities.DEX.mod}}</td>
+			<td>{{character.scores.abilities.INT.mod}}</td>
+			<td>{{character.scores.abilities.WIS.mod}}</td>
+			<td>{{character.scores.abilities.CHA.mod}}</td>
+		</tr>		
+	</table>	
+
+	<table>
+		<tr>
+			<th>DEFENSE</th>
+			<th>AC</th>
+			<th>FORT</th>
+			<th>REF</th>						
+			<th>WILL</th>
+		</tr>
+		<tr>
+			<td>SCORE</td>
+			<td>{{character.scores.defenses.AC.score}}</td>
+			<td>{{character.scores.defenses.FORT.score}}</td>
+			<td>{{character.scores.defenses.REF.score}}</td>
+			<td>{{character.scores.defenses.WILL.score}}</td>
+		</tr>		
+		<tr>
+			<td>MOD</td>
+			<td>{{character.scores.defenses.AC.mod}}</td>
+			<td>{{character.scores.defenses.FORT.mod}}</td>
+			<td>{{character.scores.defenses.REF.mod}}</td>
+			<td>{{character.scores.defenses.WILL.mod}}</td>
+		</tr>		
+	</table>	
+
+	<table>
+		<tr>
+			<th>SKILL</th>
+			<th>Acrobatics</th>
+			<th>Arcana</th>
+			<th>Athletics</th>						
+			<th>Bluff</th>
+			<th>Diplomacy</th>
+			<th>Dungeoneering</th>
+			<th>Endurance</th>
+			<th>Heal</th>
+			<th>History</th>				
+		</tr>
+		<tr>
+			<td>MOD</td>
+			<td>{{character.scores.skills.Acrobatics.score}}</td>
+			<td>{{character.scores.skills.Arcana.score}}</td>
+			<td>{{character.scores.skills.Athletics.score}}</td>
+			<td>{{character.scores.skills.Bluff.score}}</td>
+			<td>{{character.scores.skills.Diplomacy.score}}</td>
+			<td>{{character.scores.skills.Dungeoneering.score}}</td>
+			<td>{{character.scores.skills.Endurance.score}}</td>
+			<td>{{character.scores.skills.Heal.score}}</td>
+			<td>{{character.scores.skills.History.score}}</td>			
+		</tr>		
+		<tr>
+			<th>SKILL</th>					
+			<th>Insight</th>
+			<th>Intimidate</th>
+			<th>Nature</th>
+			<th>Perception</th>
+			<th>Religion</th>
+			<th>Stealth</th>						
+			<th>Streetwise</th>
+			<th>Thievery</th>			
+		</tr>	
+		<tr>			
+			<td>MOD</td>
+			<td>{{character.scores.skills.Insight.score}}</td>
+			<td>{{character.scores.skills.Intimidate.score}}</td>
+			<td>{{character.scores.skills.Nature.score}}</td>
+			<td>{{character.scores.skills.Perception.score}}</td>
+			<td>{{character.scores.skills.Religion.score}}</td>
+			<td>{{character.scores.skills.Stealth.score}}</td>
+			<td>{{character.scores.skills.Streetwise.score}}</td>
+			<td>{{character.scores.skills.Thievery.score}}</td>
+		</tr>				
+	</table>	
+	<table>
+		<tr>
+			<th>WEAPONS</th>
+			{% for x in character.items %}
+				<td>{{x.name}}</td>
+			{% endfor %}
+		</tr>
+		<tr>
+			<th>POWERS</th>
+			{% for x in character.powers %}
+				<td>{{x.name}}</td>				
+			{% endfor %}
+		</tr>	
+	</table>	
+	<form class="items" method="POST" action="/api/character/player/item/weapon/add">
+		<label><strong>ADD WEAPONS</strong></label><br />
+		<input type="hidden" name="player_id" value={{character.key.id}}>
+		{% for x in weapons %}
+		<input type="radio" name="weapon_name" value="{{x.key.name}}"><span>{{x.name}}</span>
+		{% endfor %}
+		<br /><br />
+    <input type="submit" value="Submit" />		
+	</form>
+	<form class="items" method="POST" action="/api/character/player/power/attack/add">
+		<label><strong>ADD ATTACK POWERS</strong></label><br />
+		<input type="hidden" name="player_id" value={{character.key.id}}>
+		{% for x in powers %}
+			<input type="radio" name="attack_name" value="{{x.key.name}}"><span>{{x.name}}</span>		
+		{% endfor %}
+		<br /><br />
+    <input type="submit" value="Submit" />		
+	</form>	
+</div>	
+
+{% endblock %}

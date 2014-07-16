@@ -1,0 +1,387 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+  	<title>{% block title %}d20 mobile - Morningstar{% endblock %}</title>
+
+	  <meta charset="utf-8" />
+
+		<link rel="stylesheet" type="text/css" href="/static/css/styles.css" />
+		<link href='http://fonts.googleapis.com/css?family=IM+Fell+English+SC' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Cedarville+Cursive' rel='stylesheet' type='text/css'>
+		
+		{% block script %}
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.js"></script>
+
+		<!-- Google Maps API -->
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>		
+		<script type="text/javascript"
+		    src="http://maps.google.com/maps/api/js?sensor=false">
+		</script>
+		<script type="text/javascript">
+		  function initialize() {
+		    //var center = new google.maps.LatLng(39.2, -94.6);
+		    //var center = new google.maps.LatLng(37.772716181039605, -122.45494365692139);
+		    var center = new google.maps.LatLng(41.011219975744055, -91.96384906768799);
+				var myLatlng = new google.maps.LatLng(36.14,-115.14);
+		    var myOptions = {
+		      zoom: 14,
+		      center: center,
+		      mapTypeId: google.maps.MapTypeId.ROADMAP
+		    };
+		    var map = new google.maps.Map(document.getElementById("map_canvas"),
+		        myOptions);
+				setMonsterPartyMarkers(map, monsters);
+				setDeathMarkers(map, players);
+				setBattleMarkers(map, battles);
+				setMonsterPartyMarkers(map, f_monsters);
+				setDeathMarkers(map, f_players);
+				setBattleMarkers(map, f_battles);				
+		  }
+			var players = {{players}};
+			var monsters = {{monsters}};
+			var battles = {{battles}};
+			//var c_players = {{c_players}};
+			//var c_monsters = {{c_monsters}};
+			//var c_battles = {{c_battles}};		
+			var f_players = {{f_players}};
+			var f_monsters = {{f_monsters}};
+			var f_battles = {{f_battles}};				
+			function setMonsterPartyMarkers(map, locations) {
+			  var image = new google.maps.MarkerImage('/static/images/mark-monster-32x40.png',
+        	new google.maps.Size(32.0, 40.0),
+        	new google.maps.Point(0, 0),
+        	new google.maps.Point(16.0, 20.0));
+			  var shadow = new google.maps.MarkerImage('/static/images/shadow-mark-monster-32x40.png',
+			      // The shadow image is larger in the horizontal dimension
+			      // while the position and offset are the same as for the main image.
+		        new google.maps.Size(53.0, 40.0),
+		        new google.maps.Point(0, 0),
+		        new google.maps.Point(16.0, 20.0));
+			      // Shapes define the clickable region of the icon.
+			      // The type defines an HTML <area> element 'poly' which
+			      // traces out a polygon as a series of X,Y points. The final
+			      // coordinate closes the poly by connecting to the first
+			      // coordinate.
+			  var shape = {
+			      coord: [1, 1, 1, 20, 18, 20, 18 , 1],
+			      type: 'poly'
+			  };
+
+			  for (var i = 0; i < locations.length; i++) {
+			    var pin = locations[i];
+			    var location = new google.maps.LatLng(pin['lat'], pin['lon']);
+			    var marker = new google.maps.Marker({
+			        position: location,
+			        map: map,
+							icon: image,
+							shape: shape,
+							shadow: shadow,
+							animation: google.maps.Animation.DROP			
+			    });
+			  }
+			}
+			function setDeathMarkers(map, locations) {
+			  var image = new google.maps.MarkerImage('/static/images/mark-skull-32x40.png',
+        	new google.maps.Size(32.0, 40.0),
+        	new google.maps.Point(0, 0),
+        	new google.maps.Point(16.0, 20.0));
+			  var shadow = new google.maps.MarkerImage('/static/images/shadow-mark-skull-32x40.png',
+			      // The shadow image is larger in the horizontal dimension
+			      // while the position and offset are the same as for the main image.
+		        new google.maps.Size(53.0, 40.0),
+		        new google.maps.Point(0, 0),
+		        new google.maps.Point(16.0, 20.0));
+			      // Shapes define the clickable region of the icon.
+			      // The type defines an HTML <area> element 'poly' which
+			      // traces out a polygon as a series of X,Y points. The final
+			      // coordinate closes the poly by connecting to the first
+			      // coordinate.
+			  var shape = {
+			      coord: [1, 1, 1, 20, 18, 20, 18 , 1],
+			      type: 'poly'
+			  };
+
+			  for (var i = 0; i < locations.length; i++) {
+			    var pin = locations[i];
+			    var location = new google.maps.LatLng(pin['lat'], pin['lon']);
+			    var marker = new google.maps.Marker({
+			        position: location,
+			        map: map,
+							icon: image,
+							shape: shape,
+							shadow: shadow,
+							animation: google.maps.Animation.DROP			
+			    });
+			  }
+			}	
+			function setBattleMarkers(map, locations) {
+			  var image = new google.maps.MarkerImage('/static/images/mark-battle-32x48.png',
+        	new google.maps.Size(32.0, 40.0),
+        	new google.maps.Point(0, 0),
+        	new google.maps.Point(16.0, 20.0));
+			  var shadow = new google.maps.MarkerImage('/static/images/shadow-mark-battle-32x48.png',
+			      // The shadow image is larger in the horizontal dimension
+			      // while the position and offset are the same as for the main image.
+		        new google.maps.Size(53.0, 40.0),
+		        new google.maps.Point(0, 0),
+		        new google.maps.Point(16.0, 20.0));
+			      // Shapes define the clickable region of the icon.
+			      // The type defines an HTML <area> element 'poly' which
+			      // traces out a polygon as a series of X,Y points. The final
+			      // coordinate closes the poly by connecting to the first
+			      // coordinate.
+			  var shape = {
+			      coord: [1, 1, 1, 20, 18, 20, 18 , 1],
+			      type: 'poly'
+			  };
+
+			  for (var i = 0; i < locations.length; i++) {
+			    var pin = locations[i];
+			    var location = new google.maps.LatLng(pin['lat'], pin['lon']);
+			    var marker = new google.maps.Marker({
+			        position: location,
+			        map: map,
+							icon: image,
+							shape: shape,
+							shadow: shadow,
+							animation: google.maps.Animation.DROP
+			    });
+			  }
+			}	
+		</script>
+		{% endblock %}
+		
+		<script type="text/javascript">
+
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-24078873-2']);
+		  _gaq.push(['_trackPageview']);
+
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+
+		</script>		
+  </head> 
+  <body onload="initialize()">
+		<div id="wrapper">
+			<div id="content">
+				
+				{% block header %}
+				<header id="header-wrap">
+					<div id="logo"></div>
+					<div id="title">
+						<h1><a href="/">Morningstar</a></h1>
+						<h2><span class="highlight">L</span>ocation&nbsp;&nbsp;<span class="highlight">A</span>ware&nbsp;&nbsp; <span class="highlight">R</span>ole&nbsp;&nbsp; <span class="highlight">P</span>laying</h2>							
+					</div>
+					<div id="kickstarter-wrap">
+						<h2><a href="http://www.kickstarter.com/projects/willi/d20-morningstar-location-aware-role-playing">Check Out Our<br/>
+							<img src="/static/images/kickstarter-logo-200x24.png"/><br/>
+							<span style="float:right;">Rewards >></span></a>
+						</h2>	
+					</div>	
+					<!--
+					<div id="beta-wrap">
+						<div id="beta">
+						</div>
+						<div id="android">
+							<div id="text-android">
+						  	<h2>Powered By</h2>						
+							</div>
+							<div id="logo-android">
+							</div>
+						</div>
+					</div>-->
+				</header><!-- /main-header -->
+				{% endblock %}
+				
+				{% block map %}
+				<section id="map">
+				  <div id="map_canvas"></div>
+				</section><!-- /map -->
+				{% endblock %}
+				
+				{% block content %}
+				<div id="columns">
+										
+					<section id="news">
+						<h2>Recent News</h2>
+						<article class="update">
+							<div class="update-wrap">
+								<div class="status">
+									<p><a href="/">Wulfgar the Sober</a> is questing in <a href="/">Las Vegas, Nevada</a>.</p>
+									<p class="time">10 minutes ago</p>
+								</div>
+							</div>
+						</article>	
+						<article class="update">
+							<div class="update-wrap">
+								<div class="status">								
+									<p><a href="/">Drizzt Direwolf</a> was killed by a Kobold in <a href="/">Fairfield, Iowa</a>.</p>
+									<p class="time">31 minutes ago</p>
+								</div>	
+							</div>
+						</article>
+						<article class="update">
+							<div class="update-wrap">
+								<div class="status">								
+									<p><a href="/">Drizzt Direwolf</a> is questing in <a href="/">Fairfield, Iowa</a>.</p>
+									<p class="time">45 minutes ago</p>
+								</div>
+							</div>
+						</article>
+						<article class="update">
+							<div class="update-wrap">
+								<div class="status">
+									<p><a href="/">XiXi the Clever</a> is fighting monsters in <a href="/">Cleveland, Ohio</a>.</p>
+									<p class="time">55 minutes ago</p>
+								</div>
+							</div>
+						</article>
+						<article class="update">
+							<div class="update-wrap">
+								<div class="status">
+									<p><a href="/">Drizzt Direwolf</a> is questing in <a href="/">Fairfield, Iowa</a>.</p>
+									<p class="time">1 hour ago</p>
+								</div>
+							</div>
+						</article>
+						<article class="update">
+							<div class="update-wrap">
+								<div class="status">
+									<p><a href="/">Ronin Buttershield</a> is fighting monsters in <a href="/">Fairfield, Iowa</a>.</p>
+									<p class="time">1 hour 10 minutes ago</p>
+								</div>
+							</div>
+						</article>	
+						<article class="update">
+							<div class="update-wrap">
+								<div class="status">								
+									<p><a href="/">Wulfgar the Sober</a> is questing in <a href="/">Las Vegas, Nevada</a>.</p>
+									<p class="time">2 hours 11 minutes ago</p>
+								</div>
+							</div>
+						</article>	
+						<article class="update">
+							<div class="update-wrap">
+								<div class="status">
+									<p><a href="/">Dum Dum Oakensheild</a> is fighting monsters in <a href="/">Cleveland, Ohio</a>.</p>
+									<p class="time">2 hours 20 minutes ago</p>
+								</div>
+							</div>
+						</article>
+						<article class="update">
+							<div class="update-wrap">
+								<div class="status">								
+									<p><a href="/">Durg Ironbeard</a> is was killed <a href="/">Fairfield, Iowa by a Kobold</a>.</p>
+									<p class="time">2 hours 23 minutes ago</p>
+								</div>
+							</div>
+						</article>
+						<article class="update">
+							<div class="update-wrap">
+								<div class="status">								
+									<p><a href="/">Durg Ironbeard</a> is questing in <a href="/">Fairfield, Iowa</a>.</p>
+									<p class="time">2 hours 25 minutes ago</p>
+								</div>	
+							</div>
+						</article>
+						<article class="update">
+							<div class="update-wrap">
+								<div class="status">								
+									<p><a href="/">Sharpshooter</a> is questing in <a href="/">Prescott, Arizona</a>.</p>
+									<p class="time">2 hours 44 minutes ago</p>
+								</div>
+							</div>
+						</article>
+						<article class="update">
+							<div class="update-wrap">
+								<div class="status">								
+									<p><a href="/">Grand Master Flash</a> is questing in <a href="/">New York, New York</a>.</p>
+									<p class="time">2 hours 45 minutes ago</p>
+								</div>	
+							</div>
+						</article>																													
+					</section><!-- /news -->
+					
+					<section id="game-play">
+						<div id="summary-wrap">
+							<div class="summary">
+								<h2>What Is It?</h2>
+								<p class="text14"><span class="im">d20 Morningstar</span> is a mobile role playing game that mashes geo-location with d20 game mechanics.  Players search their world for monsters, traps and other player characters; and then interact with those encounters to earn experience and loot.&nbsp;&nbsp;&nbsp;<a href="/page/features">Read More >></a></p>
+							</div>
+							<div class="summary">
+								<h2>When Can I Play?</h2>
+								<p class="text14">This is a <a href="http://www.kickstarter.com/projects/willi/d20-morningstar-location-aware-role-playing">Kickstarter project</a>.  Once the funding goal is reached, development will take approximately 14-18 weeks.  For as little as $5 you can <a href="http://www.kickstarter.com">become a backer</a> of this project and get special rewards, including an invitation to the beta release.   </p>
+								<!--<table border=0 style="background-color: #fff; padding:10px 0;" cellspacing=0>
+								  <form action="http://groups.google.com/a/d20m.com/group/morningstar/boxsubscribe">
+								  	<tr>
+											<td style="padding-left: 5px;">
+								  			Email: <input type="text" name="email" size="24">&nbsp;&nbsp;
+								  			<input type=submit name="sub" value="Subscribe">
+								  		</td>
+										</tr>
+									</form>
+								</table>-->							
+							</div>							
+							<h2>Legend</h2>	
+							<div class="legend">
+								<div class="mark">
+									<img src="/static/images/mark-monster-58x72.png"/>
+								</div>
+								<div class="summary-text">
+									Monsters<br/>Discovered
+								</div>		
+							</div>	
+							<div class="legend">
+								<div class="mark">
+									<img src="/static/images/mark-skull-58x72.png"/>
+								</div>
+								<div class="summary-text">
+									A Hero<br/>Dies
+								</div>									
+							</div>
+							<div class="legend">
+								<div class="mark">
+									<img src="/static/images/mark-battle-58x72.png"/>
+								</div>
+								<div class="summary-text">
+									Battle and<br/>Victory!
+								</div>								
+							</div>																
+						</div>
+					</section><!-- /summary -->
+				</div><!-- /columns -->	
+				{% endblock %}
+					
+				{% block footer %}	
+				<footer>
+					<div id="footer-wrap">
+						<div >
+							<p>&copy; 2011 d20 Morningstar. All Rights Reserved.  SuperKablamo, LLC.  Powered by <a href="http://www.android.com/">Android</a> and <a href="http://code.google.com/appengine/">Google App Engine</a>.</p>
+							<p class="nav"><a title="About d20 Morningstar" href="/page/about">About</a>
+								&nbsp;&nbsp;|&nbsp;&nbsp;
+								<a title="Contact Us" href="/page/contact">Contact Us</a>
+								&nbsp;&nbsp;|&nbsp;&nbsp;	
+								<a title="Game Features" href="/page/features">Game Features</a>
+								&nbsp;&nbsp;|&nbsp;&nbsp;															
+								<!--<a title="Open Game License" href="page//open">Open Game License</a>	
+								&nbsp;&nbsp;|&nbsp;&nbsp;-->							
+								<a title="Blog" href="http://blog.d20m.com/">Blog</a>
+								&nbsp;&nbsp;|&nbsp;&nbsp;								
+								<a title="Facebook" href="http://www.facebook.com/pages/D20-Mobile/216578018373721"><img style="vertical-align:bottom;width:28px;height:28px;" src="/static/images/facebook-logo-32x32.png"/></a>								
+								&nbsp;&nbsp;|&nbsp;&nbsp;								
+								<a title="Kickstarter" href="http://www.kickstarter.com/projects/willi/d20-morningstar-location-aware-role-playing"><img style="vertical-align:bottom;width:28px;height:28px;" src="/static/images/kickstarter-logo-32x32.png"/></a>								
+							</p>								
+							<!--<p>The Android robot logo is a trademark of Google Inc. Use of this trademark is subject to <a href="http://www.google.com/permissions/index.html">Google Permissions</a>.</p> -->
+					</div>
+				</footer>
+				{% endblock %}
+				
+			</div><!-- /content -->	
+		</div><!-- /wrapper -->
+  </body>		
+</html>

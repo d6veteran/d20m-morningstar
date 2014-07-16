@@ -1,0 +1,28 @@
+{% extends "main.html" %}
+
+		{% block title %}
+		<title>d20morningstar - Start</title> 
+		{% endblock %}
+		
+		{% block page-id %}
+		<div data-role="page" id="start">
+		{% endblock %}
+			
+			{% block header %}
+			<div data-role="header" data-theme="a">
+				<h1>Start</h1>
+			</div><!-- /header -->			
+			{% endblock %}
+			
+			{% block content %}
+			<div data-role="content" id="content">	
+				<h2>Adventure with:</h2>
+				<div id="buttons">
+				{% for c in characters %}
+					<a href="/mobile/character/{{c.key}}" data-role="button" target="_blank">{{c.name}}</a> 					
+				{% endfor %}
+					<a href="/mobile/character/create" data-role="button" target="_blank">CREATE NEW CHARACTER</a> 		
+				</div><!-- /buttons -->
+			</div><!-- /content -->
+			{% endblock %}
+			

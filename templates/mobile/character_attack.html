@@ -1,0 +1,174 @@
+{% extends "main.html" %}
+
+		{% block title %}
+		<title>d20morningstar - Character Quest</title> 
+		{% endblock %}
+
+		{% block script %}
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true&language=en"></script>
+		<script type="text/javascript">
+		$(function() {
+			$('#attack').bind('pageshow', function() {
+        var success = function(position) {   
+					$('label').find('.ui-btn-text').append('<span class="damage-message"></span>')
+					var coords = position.coords;
+					var lat = coords.latitude;
+					var lon = coords.longitude;
+					var player_xp = {{player.experience}};
+					$('input[name="location"]').val(lat+","+lon);
+					$('#attack-action').bind('click', function() {
+			      var url = '/api/parties/{{party_key}}/attack';	
+						var attack_data = $('#attack-form').serialize();
+						$.ajax({
+							type: "POST",
+							url: url,
+							data: attack_data,
+							dataType: "json",
+							success: function(resp) {								
+								$.each(resp.monsters, function(i,monster) {
+								  if (monster.hp == 0) {
+									 	var key = monster.key;
+									  var mxp = monster.xp;
+										player_xp += mxp;
+										$("'label[for="+key+"]'").parent().remove();
+									  $('#deathrow').find('ul').append('<li class="ui-li ui-li-static ui-body-c">'+monster.name+'&nbsp;&nbsp;&#43;&nbsp;&nbsp;'+mxp+'&nbsp;xp</li>').page();
+										$('#deathrow').find('h2').html('Deadpool');
+										$('#xp').html(player_xp);
+										if (!$('input[name="monster"]').length) {
+											$('#targets').remove();
+											$('#footer').find('a').attr('id', 'loot-action');
+											$('#footer').find('.ui-btn-text').html('LOOT!');
+										}
+									} 
+									else if (damage.status == 'Hit') {
+										var key = monster.key;
+									  $("'label[for="+key+"]'").find('.damage-message').html(monster.status);
+									}
+									else if (monster.status == 'Miss') {
+									  $("'label[for="+id+"]'").find('.damage-message').html(monster.status);									
+									}		
+					    	});
+								if ($("input[name=rmode]:radio:checked").attr('class') == 'recharge') {
+									alert("WORKS!");
+								}
+							}							
+						});
+					});
+        };
+        var fail = function(e) {
+             alert('Can\'t retrieve position.\nError: ' + e);
+        };
+        navigator.geolocation.getCurrentPosition(success, fail);				
+			});
+		});
+		</script>		
+		{% endblock %}
+		
+		{% block page-id %}
+		<div data-role="page" id="attack" data-theme="c">
+		{% endblock %}			
+			
+			{% block header %}
+			<div data-role="header" data-theme="a">
+				<h1>{{player.name}}</h1>
+			</div><!-- /header -->			
+			{% endblock %}
+						
+			{% block content %}
+			<div data-role="content" id="content">	
+				
+				<div id="stats">
+					<table summary="This table contains player stats.">
+						<tbody>
+							<tr>	
+								<th>hp</th>
+								<td id="hp">{{player.hit_points.hp}}</td>
+								<th>xp</th>
+								<td id="xp">{{player.experience}}</td>
+								<th>gp</th>
+								<td id="gp">{{player.purse.gold}}</td>
+							</tr>					
+						</tbody>	
+					</table>	
+				</div>
+				
+				<form id="attack-form">
+					<input type="hidden" name="player_key" value="{{player.key}}" />
+					<input type="hidden" name="location" value="" />
+					<input type="hidden" name="monster_party_key" value="{{monster_party.key}}" />
+										
+					<div data-role="fieldcontain" id="attacks">
+						<h2>Choose an Attack</h2>
+	    			<fieldset data-role="controlgroup">
+							{% for w in player.items.weapons %}		
+         			<input type="radio" name="attack_key" id="{{w.key}}" value="{{w.key}}" 
+								{% if forloop.first %}
+									checked="checked" 
+								{% endif %} 
+							/>
+         			<label for="{{w.key}}">
+								{{w.name}}&nbsp;&nbsp;&#43;{{w.proficiency}}&nbsp;&nbsp;&nbsp;&nbsp;
+								<span class="key">dmg</span>
+								{{w.damage_dice}}d{{w.damage_die}}</label>
+							{% endfor %}	
+							
+							{% for a in player.powers.attacks %}		
+	         		<input type="radio" name="attack_key" id="{{a.key}}" value="{{a.key}}" />
+	         		<label for="{{a.key}}">{{a.name}}&nbsp;&nbsp;
+								{{a.attack_ability}}
+								{% if a.attack_mod %}
+								  &#43;{{a.attack_mod}}&nbsp;&nbsp;
+								{% endif %}
+								<span class="key">&nbsp;&nbsp;dmg</span>
+								{% if a.damage_weapon_multiplier %}
+									{{a.damage_weapon_multiplier}}W&nbsp;
+								{% endif %}
+								{% if a.damage_dice %}
+									{{a.damage_dice}}d{{a.damage_die}}
+								{% endif %}
+								<span class="recharge ready" id="{{a.key}}-recharge">ready</span>
+							</label>
+							{% endfor %}
+    				</fieldset>
+					</div>
+				
+					<div data-role="fieldcontain" id="targets">
+						{% if monster_party.monsters %}
+						<h2>Choose a Target</h2>
+	    			{% endif %}
+						<fieldset data-role="controlgroup">
+							{% for m in monster_party.monsters %}		
+         			<input data-theme="c" type="radio" name="monster" id="{{m.key}}" value="{{m.key}}" 
+								{% if forloop.first %}
+									checked="checked" 
+								{% endif %} 
+							/>
+         			<label for="{{m.key}}">{{m.name}}</label>
+							{% endfor %}	
+    				</fieldset>
+					</div>
+				</form>
+				
+				<div id="deathrow">
+					<h2>{% if monster_party.deadpool %}Deadpool{% endif %}</h2>
+					<ul data-inset="false" data-role="listview">
+						{% for d in monster_party.deadpool %}
+						<li class="ui-li ui-li-static ui-body-c">
+							{{d.name}}&nbsp;&nbsp;&#43;{{d.experience}}&nbsp;xp
+						</li>
+						{% endfor %}
+					</ul>	
+				</div>	
+			
+			</div><!-- /content -->
+			{% endblock %}
+
+			{% block footer %}
+			<div data-role="footer" data-theme="d" data-position="fixed" id="footer">
+				{% if monster_party.monsters %}
+				<a href="#" data-role="button" data-theme="b" id="attack-action" class="button">ATTACK!</a>
+				{% else %}
+				<a href="/mobile/party/{{party_key}}/loot/{{monster_party.key}}" data-role="button" data-theme="b" id="loot-action" class="button" target="_blank">LOOT!</a>
+				{% endif %}
+			</div><!-- /footer -->			
+			{% endblock %}	

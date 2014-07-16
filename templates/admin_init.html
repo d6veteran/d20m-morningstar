@@ -1,0 +1,42 @@
+{% extends "admin.html" %}
+
+{% block content %}
+<div>
+	<form method="post" action="/admin/init/races">
+		<label>Seed Races</label>
+		<input type="submit" value="Seed" />
+	</form>	
+	<form method="post" action="/admin/init/casts">
+		<label>Seed Casts</label>
+		<input type="submit" value="Seed" />
+	</form>	
+	<form method="post" action="/admin/init/weapons">
+		<label>Seed Weapons</label>
+		<input type="submit" value="Seed" />
+	</form>	
+	<form method="post" action="/admin/init/armor">
+		<label>Seed Armor</label>
+		<input type="submit" value="Seed" />
+	</form>	
+	<form method="post" action="/admin/init/attacks">
+		<label>Seed Attacks</label>
+		<input type="submit" value="Seed" />
+	</form>	
+	<form method="post" action="/admin/init/pc_templates">
+		<label>Seed Player Character Templates</label>
+		<input type="submit" value="Seed" />
+	</form>	
+	<form method="post" action="/admin/init/npcs">
+		<label>Seed Non Player Character Templates</label>
+		<input type="submit" value="Seed" />
+	</form>
+	<form method="post" action="/admin/init/pins">
+		<label>Seed Battle Pins</label>
+		<input type="submit" value="Seed" />
+	</form>
+	<form method="post" action="/admin/init/ft_data">
+		<label>Update Fusion Table</label>
+		<input type="submit" value="Seed" />
+	</form>	
+</div>	
+{% endblock %}

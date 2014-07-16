@@ -1,0 +1,60 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+	<head> 
+		
+		{% block title %}
+		<title>d20morningstar</title> 
+		{% endblock %}
+		
+		<meta name="viewport" content="width=device-width; height=device-height; user-scalable=yes" />
+		<link rel="stylesheet" href="/static/css/android.css" />
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.css" />
+
+
+				
+		{% block styles %}
+		{% endblock %}
+		
+		<script src="https://www.google.com/jsapi?key=ABQIAAAApPeof0WyN6ORT7NeNop5OxQhS8mdepxW5-6qUjpskYmhafYcLRQjyW8D0bRdsydbD1maEkV9aSDKrw" type="text/javascript"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"></script>
+				
+		<!-- Loaded before jQuery Mobile -->
+		{% block script %}
+		{% endblock %}
+		
+		<script type="text/javascript" src="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.js"></script>
+		<script type="text/javascript">
+		// Check for iPhone screen size
+		if($.mobile.media("screen and (min-width: 320px)")) {
+		    // Check for iPhone4 Retina Display
+		    if($.mobile.media("screen and (-webkit-min-device-pixel-ratio: 2)")) {
+		        $('meta[name=viewport]').attr('content','width=device-width, user-scalable=no,initial-scale=.5, maximum-scale=.5, minimum-scale=.5');
+		    }
+		}
+		
+		</script>
+		
+		{% block jquery-mobile-script %}
+		{% endblock %}
+		
+	</head>
+	<body>
+
+		{% block page-id %}
+		<div data-role="page" id="main" data-theme="c">
+		{% endblock %}
+			
+			{% block header %}
+			{% endblock %}
+			
+			{% block content %}
+			{% endblock %}
+
+			{% block footer %}
+			{% endblock %}
+						
+		</div><!-- /page -->	
+		{% block dialog %}
+		{% endblock %}	
+	</body>	
+</html>		
